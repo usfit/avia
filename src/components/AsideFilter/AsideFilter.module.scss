@@ -1,0 +1,69 @@
+.AsideFilter {
+  background-color: white;
+  width: 232px;
+  height: 252px;
+  padding-bottom: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  legend {
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 600;
+    padding: 20px 20px 10px 20px;
+  }
+
+  label {
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
+    cursor: url('../../images/cursor.svg'), pointer;
+  }
+
+  .AsideFilter__item {
+    padding: 10px 20px;
+  }
+
+  .AsideFilter__checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+
+  .AsideFilter__checkbox + label {
+    margin-left: 30px;
+    position: relative;
+  }
+
+  .AsideFilter__checkbox + label::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: -30px;
+    border: 1px solid #9abbce;
+    border-radius: 2px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+  }
+
+  .AsideFilter__checkbox:checked + label::before {
+    border-color: #2196f3;
+    background-image: url('../../images/checked.svg');
+  }
+
+  .AsideFilter__checkbox:hover + label::before {
+    border-color: #2196f3;
+  }
+
+  .AsideFilter__item:has(.AsideFilter__checkbox:hover + label) {
+    background-color: #f1fcff;
+  }
+}

@@ -1,27 +1,31 @@
 const initialState = {
   filter: 'cheaper',
+  checked: {
+    all: true,
+    noneTransplants: true,
+    oneTransplants: true,
+    twoTransplants: true,
+    threeTransplants: true,
+  },
 };
 
 const reducer = (state = initialState, action = {}) => {
-  if (state === 'undefined') {
-    return state;
-  }
-  const newState = Object.assign(state);
+  let newState = {};
   switch (action.type) {
-    case 'CHOOSE_CHEAPER':
-      newState.filter = 'cheaper';
-      return newState;
+    case 'cheaper':
+      newState = { filter: 'cheaper' };
+      return { ...state, ...newState };
 
-    case 'CHOOSE_FASTER':
-      newState.filter = 'faster';
-      return newState;
+    case 'faster':
+      newState = { filter: 'faster' };
+      return { ...state, ...newState };
 
-    case 'CHOOSE_OPTIMAL':
-      newState.filter = 'optimal';
-      return newState;
+    case 'optimal':
+      newState = { filter: 'optimal' };
+      return { ...state, ...newState };
 
     default:
-      return newState;
+      return state;
   }
 };
 

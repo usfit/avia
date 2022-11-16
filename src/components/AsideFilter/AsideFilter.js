@@ -1,33 +1,65 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import * as actions from '../../actions';
 
 import classes from './AsideFilter.module.scss';
 
-function AsideFilter() {
+const changeCheckBox = (e, getCurrentCheckbox) => {
+  const val = e.target.id;
+  getCurrentCheckbox(val);
+};
+
+function AsideFilter({ checked, getCurrentCheckbox }) {
   return (
     <aside className={classes.AsideFilter}>
       <fieldset>
         <legend>Количество пересадок</legend>
 
         <div className={classes.AsideFilter__item}>
-          <input type="checkbox" className={classes.AsideFilter__checkbox} id="all" name="all" />
+          <input
+            type="checkbox"
+            className={classes.AsideFilter__checkbox}
+            id="all"
+            name="all"
+            checked={checked.all}
+            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
+          />
           <label htmlFor="all">Все</label>
         </div>
         <div className={classes.AsideFilter__item}>
           <input
             type="checkbox"
             className={classes.AsideFilter__checkbox}
-            id="nonetransplants"
-            name="nonetransplants"
+            id="noneTransplants"
+            name="noneTransplants"
+            checked={checked.noneTransplants}
+            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
           />
-          <label htmlFor="nonetransplants">Без пересадок</label>
+          <label htmlFor="noneTransplants">Без пересадок</label>
         </div>
         <div className={classes.AsideFilter__item}>
-          <input type="checkbox" className={classes.AsideFilter__checkbox} id="oneTransplants" name="oneTransplants" />
+          <input
+            type="checkbox"
+            className={classes.AsideFilter__checkbox}
+            id="oneTransplants"
+            name="oneTransplants"
+            checked={checked.oneTransplants}
+            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
+          />
           <label htmlFor="oneTransplants">1 пересадка</label>
         </div>
         <div className={classes.AsideFilter__item}>
-          <input type="checkbox" className={classes.AsideFilter__checkbox} id="twoTransplants" name="twoTransplants" />
+          <input
+            type="checkbox"
+            className={classes.AsideFilter__checkbox}
+            id="twoTransplants"
+            name="twoTransplants"
+            checked={checked.twoTransplants}
+            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
+          />
           <label htmlFor="twoTransplants">2 пересадки</label>
         </div>
         <div className={classes.AsideFilter__item}>
@@ -36,6 +68,8 @@ function AsideFilter() {
             className={classes.AsideFilter__checkbox}
             id="threeTransplants"
             name="threeTransplants"
+            checked={checked.threeTransplants}
+            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
           />
           <label htmlFor="threeTransplants">3 пересадки</label>
         </div>
@@ -44,4 +78,15 @@ function AsideFilter() {
   );
 }
 
-export default AsideFilter;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const { getCurrentCheckbox } = bindActionCreators(actions, dispatch);
+  return {
+    getCurrentCheckbox,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AsideFilter);

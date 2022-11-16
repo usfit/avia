@@ -1,3 +1,3 @@
-export const CHOOSE_CHEAPER = () => ({ type: 'CHOOSE_CHEAPER' });
-export const CHOOSE_FASTER = () => ({ type: 'CHOOSE_FASTER' });
-export const CHOOSE_OPTIMAL = () => ({ type: 'CHOOSE_OPTIMAL' });
+// eslint-disable-next-line import/prefer-default-export
+export const getCurrentFilter = (filter) => ({ type: filter });
+export const getCurrentCheckbox = (checkBox) => ({ type: checkBox });

@@ -1,20 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import { CHOOSE_CHEAPER, CHOOSE_FASTER, CHOOSE_OPTIMAL } from '../../actions';
+import * as actions from '../../actions';
 
 import classes from './TicketFiltres.module.scss';
 
-function TicketFiltres({ filter, cheaper, faster, optimal }) {
+const changeFilter = (e, getCurrentFilter) => {
+  const val = e.target.id;
+  getCurrentFilter(val);
+};
+
+function TicketFiltres({ filter, getCurrentFilter }) {
   return (
     <div className={classes.TicketFilters}>
-      <button className={filter === 'cheaper' ? classes.focused : ''} type="button" onClick={cheaper}>
+      <button
+        id="cheaper"
+        className={filter === 'cheaper' ? classes.focused : ''}
+        type="button"
+        onClick={(e) => changeFilter(e, getCurrentFilter)}
+      >
         САМЫЙ ДЕШЕВЫЙ
       </button>
-      <button className={filter === 'faster' ? classes.focused : ''} type="button" onClick={faster}>
+      <button
+        id="faster"
+        className={filter === 'faster' ? classes.focused : ''}
+        type="button"
+        onClick={(e) => changeFilter(e, getCurrentFilter)}
+      >
         САМЫЙ БЫСТРЫЙ
       </button>
-      <button className={filter === 'optimal' ? classes.focused : ''} type="button" onClick={optimal}>
+      <button
+        id="optimal"
+        className={filter === 'optimal' ? classes.focused : ''}
+        type="button"
+        onClick={(e) => changeFilter(e, getCurrentFilter)}
+      >
         ОПТИМАЛЬНЫЙ
       </button>
     </div>
@@ -22,14 +43,13 @@ function TicketFiltres({ filter, cheaper, faster, optimal }) {
 }
 
 const mapStateToProps = (state) => {
-  return { filter: state.filter };
+  return state;
 };
 
 const mapDispatchToProps = (dispatch) => {
+  const { getCurrentFilter } = bindActionCreators(actions, dispatch);
   return {
-    cheaper: () => dispatch(CHOOSE_CHEAPER()),
-    faster: () => dispatch(CHOOSE_FASTER()),
-    optimal: () => dispatch(CHOOSE_OPTIMAL()),
+    getCurrentFilter,
   };
 };
 

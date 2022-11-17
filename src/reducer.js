@@ -1,4 +1,5 @@
 const initialState = {
+  tickets: [],
   filter: 'cheaper',
   checked: {
     all: true,

@@ -9,20 +9,59 @@ const initialState = {
   },
 };
 
+const checkAll = (newState) => {
+  let count = 0;
+  Object.values(newState)
+    .splice(1)
+    .forEach((value) => {
+      count += value;
+    });
+  return count;
+};
+
+const setCheckbox = (state, check) => {
+  const newState = { ...state.checked, ...{ [check]: !state.checked[check] } };
+  newState.all = !!(checkAll(newState) === 4);
+  return newState;
+};
+
 const reducer = (state = initialState, action = {}) => {
   let newState = {};
   switch (action.type) {
     case 'cheaper':
-      newState = { filter: 'cheaper' };
-      return { ...state, ...newState };
+      return { ...state, filter: 'cheaper' };
 
     case 'faster':
-      newState = { filter: 'faster' };
-      return { ...state, ...newState };
+      return { ...state, filter: 'faster' };
 
     case 'optimal':
-      newState = { filter: 'optimal' };
-      return { ...state, ...newState };
+      return { ...state, filter: 'optimal' };
+
+    case 'all':
+      newState = { ...state.checked, ...{ all: !state.checked.all } };
+      Object.keys(newState)
+        .splice(1)
+        .forEach((key) => {
+          newState[key] = !!newState.all;
+        });
+
+      return { ...state, checked: newState };
+
+    case 'noneTransplants':
+      newState = setCheckbox(state, 'noneTransplants');
+      return { ...state, checked: newState };
+
+    case 'oneTransplants':
+      newState = setCheckbox(state, 'oneTransplants');
+      return { ...state, checked: newState };
+
+    case 'twoTransplants':
+      newState = setCheckbox(state, 'twoTransplants');
+      return { ...state, checked: newState };
+
+    case 'threeTransplants':
+      newState = setCheckbox(state, 'threeTransplants');
+      return { ...state, checked: newState };
 
     default:
       return state;

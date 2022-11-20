@@ -79,13 +79,13 @@ function AsideFilter({ checked, getCurrentCheckbox }) {
 }
 
 const mapStateToProps = (state) => {
-  return state;
+  return state.reducerSetCheckbox;
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const { getCurrentCheckbox } = bindActionCreators(actions, dispatch);
+  const { GET_CURRENT_CHECLBOX } = bindActionCreators(actions, dispatch);
   return {
-    getCurrentCheckbox,
+    getCurrentCheckbox: GET_CURRENT_CHECLBOX,
   };
 };
 

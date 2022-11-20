@@ -43,13 +43,13 @@ function TicketFiltres({ filter, getCurrentFilter }) {
 }
 
 const mapStateToProps = (state) => {
-  return state;
+  return state.reducerSetFilter;
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const { getCurrentFilter } = bindActionCreators(actions, dispatch);
+  const { GET_CURRENT_FILTER } = bindActionCreators(actions, dispatch);
   return {
-    getCurrentFilter,
+    getCurrentFilter: GET_CURRENT_FILTER,
   };
 };
 

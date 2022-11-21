@@ -1,6 +1,12 @@
 /* eslint-disable func-names */
+
+// Переключения фильтров
 export const GET_CURRENT_FILTER = (filter) => ({ type: filter });
 export const GET_CURRENT_CHECLBOX = (checkBox) => ({ type: checkBox });
+
+// Отображение билетов
+
+export const RENDER_TICKETS = () => ({ type: 'RENDER_TICKETS' });
 
 // Начинаем поиск
 

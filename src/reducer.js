@@ -115,6 +115,17 @@ function getTickets(
   }
 }
 
-const reducer = combineReducers({ reducerSetFilter, reducerSetCheckbox, getTickets });
+// Отображение билетов
+
+function renderTickets(state = 5, action = {}) {
+  switch (action.type) {
+    case 'RENDER_TICKETS':
+      return state + 5;
+    default:
+      return state;
+  }
+}
+
+const reducer = combineReducers({ reducerSetFilter, reducerSetCheckbox, getTickets, renderTickets });
 
 export default reducer;

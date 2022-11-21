@@ -43,7 +43,7 @@ function TicketFiltres({ filter, getCurrentFilter }) {
 }
 
 const mapStateToProps = (state) => {
-  return state;
+  return state.reducerSetFilter;
 };
 
 const mapDispatchToProps = (dispatch) => {

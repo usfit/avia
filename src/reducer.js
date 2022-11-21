@@ -1,14 +1,35 @@
-const initialState = {
-  tickets: [],
-  filter: 'cheaper',
-  checked: {
-    all: true,
-    noneTransplants: true,
-    oneTransplants: true,
-    twoTransplants: true,
-    threeTransplants: true,
-  },
-};
+import { combineReducers } from 'redux';
+
+// const initialState = {
+//   tickets: [],
+//   filter: 'cheaper',
+//   checked: {
+//     all: true,
+//     noneTransplants: true,
+//     oneTransplants: true,
+//     twoTransplants: true,
+//     threeTransplants: true,
+//   },
+// };
+
+// Изменение фильтров сверху
+
+function reducerSetFilter(state = { filter: 'cheaper' }, action = {}) {
+  switch (action.type) {
+    case 'cheaper':
+      return { filter: 'cheaper' };
+
+    case 'faster':
+      return { filter: 'faster' };
+
+    case 'optimal':
+      return { filter: 'optimal' };
+    default:
+      return state;
+  }
+}
+
+// Измменение фильтров сбоку
 
 const checkAll = (newState) => {
   let count = 0;
@@ -26,18 +47,21 @@ const setCheckbox = (state, check) => {
   return newState;
 };
 
-const reducer = (state = initialState, action = {}) => {
+function reducerSetCheckbox(
+  state = {
+    checked: {
+      all: true,
+      noneTransplants: true,
+      oneTransplants: true,
+      twoTransplants: true,
+      threeTransplants: true,
+    },
+  },
+  action = {}
+) {
   let newState = {};
+
   switch (action.type) {
-    case 'cheaper':
-      return { ...state, filter: 'cheaper' };
-
-    case 'faster':
-      return { ...state, filter: 'faster' };
-
-    case 'optimal':
-      return { ...state, filter: 'optimal' };
-
     case 'all':
       newState = { ...state.checked, ...{ all: !state.checked.all } };
       Object.keys(newState)
@@ -46,27 +70,34 @@ const reducer = (state = initialState, action = {}) => {
           newState[key] = !!newState.all;
         });
 
-      return { ...state, checked: newState };
+      return { checked: newState };
 
     case 'noneTransplants':
       newState = setCheckbox(state, 'noneTransplants');
-      return { ...state, checked: newState };
+      return { checked: newState };
 
     case 'oneTransplants':
       newState = setCheckbox(state, 'oneTransplants');
-      return { ...state, checked: newState };
+      return { checked: newState };
 
     case 'twoTransplants':
       newState = setCheckbox(state, 'twoTransplants');
-      return { ...state, checked: newState };
+      return { checked: newState };
 
     case 'threeTransplants':
       newState = setCheckbox(state, 'threeTransplants');
-      return { ...state, checked: newState };
+      return { checked: newState };
 
     default:
       return state;
   }
-};
+}
+
+// Запрос на сервер
+
+const reducer = combineReducers({
+  reducerSetFilter,
+  reducerSetCheckbox,
+});
 
 export default reducer;

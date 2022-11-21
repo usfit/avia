@@ -79,7 +79,7 @@ function AsideFilter({ checked, getCurrentCheckbox }) {
 }
 
 const mapStateToProps = (state) => {
-  return state;
+  return state.reducerSetCheckbox;
 };
 
 const mapDispatchToProps = (dispatch) => {

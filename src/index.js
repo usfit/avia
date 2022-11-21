@@ -6,7 +6,6 @@ import redaxThunk from 'redux-thunk';
 
 import reducer from './reducer';
 import Avia from './components/Avia';
-import getTickets from './servises/AviaServise';
 
 import './style.scss';
 

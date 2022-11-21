@@ -83,9 +83,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const { getCurrentCheckbox } = bindActionCreators(actions, dispatch);
+  const { GET_CURRENT_CHECLBOX } = bindActionCreators(actions, dispatch);
   return {
-    getCurrentCheckbox,
+    getCurrentCheckbox: GET_CURRENT_CHECLBOX,
   };
 };
 

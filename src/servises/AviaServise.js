@@ -11,8 +11,7 @@ async function getTickets() {
   const searchId = await getId();
   const url = `${baseURL}tickets?searchId=${searchId.searchId}`;
   const res = await fetch(url);
-  const body = await res.json();
-  console.log(body.tickets);
+  return res;
 }
 
 export default getTickets;

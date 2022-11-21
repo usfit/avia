@@ -12,7 +12,7 @@ import { combineReducers } from 'redux';
 //   },
 // };
 
-// Изменение фильтров сверху
+// Вильтры сверху
 
 function reducerSetFilter(state = { filter: 'cheaper' }, action = {}) {
   switch (action.type) {
@@ -29,7 +29,7 @@ function reducerSetFilter(state = { filter: 'cheaper' }, action = {}) {
   }
 }
 
-// Измменение фильтров сбоку
+// Фильтры снизу
 
 const checkAll = (newState) => {
   let count = 0;
@@ -69,9 +69,7 @@ function reducerSetCheckbox(
         .forEach((key) => {
           newState[key] = !!newState.all;
         });
-
       return { checked: newState };
-
     case 'noneTransplants':
       newState = setCheckbox(state, 'noneTransplants');
       return { checked: newState };
@@ -86,18 +84,37 @@ function reducerSetCheckbox(
 
     case 'threeTransplants':
       newState = setCheckbox(state, 'threeTransplants');
-      return { checked: newState };
+      return { state, checked: newState };
 
     default:
       return state;
   }
 }
 
-// Запрос на сервер
+// Получение списка билетов
 
-const reducer = combineReducers({
-  reducerSetFilter,
-  reducerSetCheckbox,
-});
+// Начинаем поиск
+
+function getTickets(
+  state = {
+    isFetching: false,
+    searchId: null,
+    ticketsList: [],
+  },
+  action = {}
+) {
+  switch (action.type) {
+    case 'START_SEARCH':
+      return { ...state, isFetching: true };
+    case 'RECEIVE_SEARCH_ID':
+      return { ...state, searchId: action.searchId };
+    case 'RECEIVE_TICKETS':
+      return { ...state, ticketsList: action.tickets };
+    default:
+      return state;
+  }
+}
+
+const reducer = combineReducers({ reducerSetFilter, reducerSetCheckbox, getTickets });
 
 export default reducer;

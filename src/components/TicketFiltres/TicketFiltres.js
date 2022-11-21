@@ -47,9 +47,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const { getCurrentFilter } = bindActionCreators(actions, dispatch);
+  const { GET_CURRENT_FILTER } = bindActionCreators(actions, dispatch);
   return {
-    getCurrentFilter,
+    getCurrentFilter: GET_CURRENT_FILTER,
   };
 };
 

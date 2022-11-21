@@ -1,6 +1,5 @@
 import React from 'react';
-
-import logo from '../../images/S7_logo.png';
+import { format } from 'date-fns';
 
 import classes from './Ticket.module.scss';
 
@@ -24,27 +23,33 @@ const messageStops = (stops) => {
   return message;
 };
 
+const getTicketDate = (date, duration) => {
+  const oneDate = new Date(date);
+  const twoDate = new Date(oneDate.getTime() + duration * 60000);
+  const dateMessage = `${format(oneDate, 'HH:mm')} - ${format(twoDate, 'HH:mm')}`;
+  return dateMessage;
+};
+
 function Ticket({ ticket }) {
-  console.log(ticket);
   const { price, carrier } = ticket;
   const priceTicket = `${Math.trunc(price / 1000)} ${price % 1000} Р`;
   const segmentOne = ticket.segments[0];
   const segmentsOneMessageStopsCount = messageStopCount(segmentOne.stops.length);
   const segmentOneMessageStops = messageStops(segmentOne.stops);
   const segmentOneDuration = `${Math.trunc(segmentOne.duration / 60)}ч ${segmentOne.duration % 60}м`;
-  const segmentOneDate = new Date(segmentOne.date);
-  console.log(segmentOneDate);
+  const segmentOneDate = getTicketDate(segmentOne.date, segmentOne.duration);
 
   const segmentTwo = ticket.segments[1];
   const segmentsTwoMessageStopsCount = messageStopCount(segmentTwo.stops.length);
   const segmentTwoMessageStops = messageStops(segmentTwo.stops);
   const segmentTwoDuration = `${Math.trunc(segmentTwo.duration / 60)}ч ${segmentTwo.duration % 60}м`;
+  const segmentTwoDate = getTicketDate(segmentTwo.date, segmentTwo.duration);
+
   return (
     <div className={classes.Ticket}>
       <div className={classes.Ticket__header}>
         <p className={classes.Ticket__price}>{priceTicket}</p>
-        {/* <img alt="logo" src={logo} /> */}
-        <p>{carrier}</p>
+        <img alt="logo" src={`https://pics.avs.io/99/36/${carrier}.png`} />
       </div>
       <div className={classes.Ticket__info}>
         <table>
@@ -57,7 +62,7 @@ function Ticket({ ticket }) {
           </thead>
           <tbody>
             <tr>
-              <td>10:45 - 08:00</td>
+              <td>{segmentOneDate}</td>
               <td>{segmentOneDuration}</td>
               <td>{segmentOneMessageStops}</td>
             </tr>
@@ -73,7 +78,7 @@ function Ticket({ ticket }) {
           </thead>
           <tbody>
             <tr>
-              <td>11:20 - 00:50</td>
+              <td>{segmentTwoDate}</td>
               <td>{segmentTwoDuration}</td>
               <td>{segmentTwoMessageStops}</td>
             </tr>

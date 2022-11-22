@@ -8,7 +8,6 @@ import classes from './TicketsList.module.scss';
 
 function TicketsList({ tickets, renderTicketsCount }) {
   const ticketsView = tickets.slice(0, renderTicketsCount);
-  console.log(ticketsView);
   const components = ticketsView.map((ticket) => {
     return <Ticket key={uuidv4()} ticket={ticket} />;
   });

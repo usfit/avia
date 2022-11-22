@@ -103,13 +103,16 @@ function getTickets(
   },
   action = {}
 ) {
+  let newTicketsList = [];
   switch (action.type) {
     case 'START_SEARCH':
       return { ...state, isFetching: true };
     case 'RECEIVE_SEARCH_ID':
       return { ...state, searchId: action.searchId };
     case 'RECEIVE_TICKETS':
-      return { ...state, ticketsList: action.tickets };
+      newTicketsList = [...state.ticketsList, ...action.tickets.tickets];
+      console.log(state);
+      return { ...state, ticketsList: newTicketsList };
     default:
       return state;
   }

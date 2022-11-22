@@ -24,6 +24,7 @@ export const RECEIVE_SEARCH_ID = (searchId) => {
 // Устанавливаем билеты
 
 export const RECEIVE_TICKETS = (tickets) => {
+  console.log(tickets);
   return {
     type: 'RECEIVE_TICKETS',
     tickets,
@@ -34,16 +35,25 @@ export const RECEIVE_TICKETS = (tickets) => {
 export function fetchTickets(searchId) {
   return (dispatch) => {
     dispatch(RECEIVE_SEARCH_ID(searchId));
-    return fetch(`https://front-test.dev.aviasales.ru/tickets?searchId=${searchId}`)
+    return fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`)
       .then((res) => res.json())
-      .then((ans) => dispatch(RECEIVE_TICKETS(ans)));
+      .then((ans) => dispatch(fetchTicketsMore(ans, searchId)));
   };
 }
+
+// export function fetchTicketsMore(ans, searchId) {
+//   return (dispatch) => {
+//     dispatch(RECEIVE_TICKETS(ans));
+//     if (!ans.stop) {
+//       const interval = setInterval(() => dispatch(fetchTickets(searchId)), 1500);
+//     }
+//   };
+// }
 
 // Запрашиваем id
 export function fetchId() {
   return function (dispatch) {
-    return fetch('https://front-test.dev.aviasales.ru/search')
+    return fetch('https://aviasales-test-api.kata.academy/search')
       .then((res) => res.json())
       .then((ans) => dispatch(fetchTickets(ans.searchId)));
   };

@@ -1,10 +1,27 @@
+// Установка отображения билетов
+
+export const SET_TICKETS_VIEW = (ticketsView, filter) => ({ type: 'SET_TICKETS_VIEW', ticketsView, filter });
+
 // Переключения фильтров
 export const GET_CURRENT_FILTER = (filter) => ({ type: filter });
 export const GET_CURRENT_CHECLBOX = (checkBox) => ({ type: checkBox });
 
 // Отображение билетов
 
-export const RENDER_TICKETS = () => ({ type: 'RENDER_TICKETS' });
+export const RENDER_TICKETS = () => {
+  return { type: 'RENDER_TICKETS' };
+};
+
+// Какие билеты отображать
+
+export function setTicketsView() {
+  return function (dispatch, setState) {
+    const state = setState();
+    const ticketsList = state.getTickets.ticketsList;
+    const filter = state.reducerSetFilter.filter;
+    return dispatch(SET_TICKETS_VIEW(ticketsList, filter));
+  };
+}
 
 // Устанавливаем билеты
 
@@ -36,6 +53,7 @@ export function fetchTickets(searchId) {
 export function fetchTicketsMore(ans, searchId) {
   return (dispatch) => {
     dispatch(RECEIVE_TICKETS(ans));
+    dispatch(setTicketsView());
     if (!ans.stop) {
       setTimeout(() => dispatch(fetchTickets(searchId)), 250);
     }

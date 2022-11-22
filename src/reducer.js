@@ -1,17 +1,5 @@
 import { combineReducers } from 'redux';
 
-// const initialState = {
-//   tickets: [],
-//   filter: 'cheaper',
-//   checked: {
-//     all: true,
-//     noneTransplants: true,
-//     oneTransplants: true,
-//     twoTransplants: true,
-//     threeTransplants: true,
-//   },
-// };
-
 // Вильтры сверху
 
 function reducerSetFilter(state = { filter: 'cheaper' }, action = {}) {
@@ -125,6 +113,16 @@ function renderTickets(state = 5, action = {}) {
   }
 }
 
-const reducer = combineReducers({ reducerSetFilter, reducerSetCheckbox, getTickets, renderTickets });
+function ticketsView(state = [], action = {}) {
+  const tickets = action.ticketsView;
+  switch (action.type) {
+    case 'SET_TICKETS_VIEW':
+      return tickets;
+    default:
+      return state;
+  }
+}
+
+const reducer = combineReducers({ reducerSetFilter, reducerSetCheckbox, getTickets, renderTickets, ticketsView });
 
 export default reducer;

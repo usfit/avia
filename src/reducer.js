@@ -98,21 +98,17 @@ function reducerSetCheckbox(
 function getTickets(
   state = {
     isFetching: false,
-    searchId: null,
     ticketsList: [],
   },
   action = {}
 ) {
   let newTicketsList = [];
   switch (action.type) {
-    case 'START_SEARCH':
-      return { ...state, isFetching: true };
     case 'RECEIVE_SEARCH_ID':
       return { ...state, searchId: action.searchId };
     case 'RECEIVE_TICKETS':
       newTicketsList = [...state.ticketsList, ...action.tickets.tickets];
-      console.log(state);
-      return { ...state, ticketsList: newTicketsList };
+      return { ...state, ticketsList: newTicketsList, isFetching: !action.tickets.stop };
     default:
       return state;
   }

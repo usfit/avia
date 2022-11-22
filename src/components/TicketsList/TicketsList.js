@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { Spin } from 'antd';
+import { Spin, Progress } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import Ticket from '../Ticket';
@@ -13,7 +13,7 @@ function TicketsList({ tickets, renderTicketsCount, isFetching }) {
   const components = ticketsView.map((ticket) => {
     return <Ticket key={uuidv4()} ticket={ticket} />;
   });
-  const loader = isFetching ? <p>ЗАГРУЗКА</p> : null;
+  const loader = isFetching ? <Progress percent={tickets.length / 100} showInfo={false} /> : null;
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
   const spinner = tickets.length === 0 ? <Spin indicator={antIcon} /> : null;
   return (

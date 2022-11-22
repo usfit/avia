@@ -32,7 +32,8 @@ const getTicketDate = (date, duration) => {
 
 function Ticket({ ticket }) {
   const { price, carrier } = ticket;
-  const priceTicket = `${Math.trunc(price / 1000)} ${price % 1000} Р`;
+  const priceTicket =
+    price % 1000 === 0 ? `${Math.trunc(price / 1000)} 000 Р` : `${Math.trunc(price / 1000)} ${price % 1000} Р`;
   const segmentOne = ticket.segments[0];
   const segmentsOneMessageStopsCount = messageStopCount(segmentOne.stops.length);
   const segmentOneMessageStops = messageStops(segmentOne.stops);

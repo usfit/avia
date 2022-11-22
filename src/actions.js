@@ -37,7 +37,7 @@ export function fetchTicketsMore(ans, searchId) {
   return (dispatch) => {
     dispatch(RECEIVE_TICKETS(ans));
     if (!ans.stop) {
-      setTimeout(() => dispatch(fetchTickets(searchId)), 1000);
+      setTimeout(() => dispatch(fetchTickets(searchId)), 250);
     }
   };
 }

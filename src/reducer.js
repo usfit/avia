@@ -115,12 +115,15 @@ function renderTickets(state = 5, action = {}) {
 
 function ticketsView(state = [], action = {}) {
   const tickets = action.ticketsView;
-  switch (action.type) {
-    case 'SET_TICKETS_VIEW':
-      return tickets;
-    default:
-      return state;
+  if (action.type === 'SET_TICKETS_VIEW') {
+    switch (action.filter) {
+      case 'cheaper':
+        return tickets.sort((a, b) => (a.price > b.price ? 1 : -1));
+      default:
+        return state;
+    }
   }
+  return state;
 }
 
 const reducer = combineReducers({ reducerSetFilter, reducerSetCheckbox, getTickets, renderTickets, ticketsView });

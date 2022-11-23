@@ -2,16 +2,6 @@
 
 export const SET_TICKETS_VIEW = (ticketsView, filter) => ({ type: 'SET_TICKETS_VIEW', ticketsView, filter });
 
-// Переключения фильтров
-export const GET_CURRENT_FILTER = (filter) => ({ type: filter });
-export const GET_CURRENT_CHECLBOX = (checkBox) => ({ type: checkBox });
-
-// Отображение билетов
-
-export const RENDER_TICKETS = () => {
-  return { type: 'RENDER_TICKETS' };
-};
-
 // Какие билеты отображать
 
 export function setTicketsView() {
@@ -22,6 +12,24 @@ export function setTicketsView() {
     return dispatch(SET_TICKETS_VIEW(ticketsList, filter));
   };
 }
+
+// Переключения фильтров
+
+export const GET_CURRENT_FILTER = (filter) => ({ type: filter });
+export const GET_CURRENT_CHECLBOX = (checkBox) => ({ type: checkBox });
+
+export function onButotonFilter(filter) {
+  return function (dispatch) {
+    dispatch(setTicketsView());
+    return dispatch(GET_CURRENT_FILTER(filter));
+  };
+}
+
+// Отображение билетов
+
+export const RENDER_TICKETS = () => {
+  return { type: 'RENDER_TICKETS' };
+};
 
 // Устанавливаем билеты
 
@@ -65,7 +73,11 @@ export function fetchId() {
   return function (dispatch) {
     return fetch('https://aviasales-test-api.kata.academy/search')
       .then((res) => res.json())
-      .then((ans) => dispatch(fetchTickets(ans.searchId)));
+      .then((ans) => dispatch(fetchTickets(ans.searchId))).catch(err => {
+        if (err.message === 'Failed to fetch') {
+          alert('Проверьте соединение к интернету и обновите страницу!');
+        }
+      });
   };
 }
 

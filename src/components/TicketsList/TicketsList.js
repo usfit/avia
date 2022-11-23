@@ -3,15 +3,12 @@ import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { Spin, Progress } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { bindActionCreators } from 'redux';
 
-import * as actions from '../../actions';
 import Ticket from '../Ticket';
 
 import classes from './TicketsList.module.scss';
 
-function TicketsList({ tickets, renderTicketsCount, isFetching, setTicketsView }) {
-  setTicketsView();
+function TicketsList({ tickets, renderTicketsCount, isFetching }) {
   const ticketsView = tickets.slice(0, renderTicketsCount);
   const components = ticketsView.map((ticket) => {
     return <Ticket key={uuidv4()} ticket={ticket} />;
@@ -38,9 +35,4 @@ const mapStateToProps = (state) => {
   return { tickets: [], isFetching };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const { setTicketsView } = bindActionCreators(actions, dispatch);
-  return { setTicketsView };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TicketsList);
+export default connect(mapStateToProps)(TicketsList);

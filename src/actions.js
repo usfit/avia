@@ -18,10 +18,10 @@ export function setTicketsView() {
 export const GET_CURRENT_FILTER = (filter) => ({ type: filter });
 export const GET_CURRENT_CHECLBOX = (checkBox) => ({ type: checkBox });
 
-export function onButotonFilter(filter) {
+export function onButtonFilter(filter) {
   return function (dispatch) {
+    dispatch(GET_CURRENT_FILTER(filter));
     dispatch(setTicketsView());
-    return dispatch(GET_CURRENT_FILTER(filter));
   };
 }
 
@@ -73,7 +73,8 @@ export function fetchId() {
   return function (dispatch) {
     return fetch('https://aviasales-test-api.kata.academy/search')
       .then((res) => res.json())
-      .then((ans) => dispatch(fetchTickets(ans.searchId))).catch(err => {
+      .then((ans) => dispatch(fetchTickets(ans.searchId)))
+      .catch((err) => {
         if (err.message === 'Failed to fetch') {
           alert('Проверьте соединение к интернету и обновите страницу!');
         }

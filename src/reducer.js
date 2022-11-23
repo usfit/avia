@@ -114,11 +114,23 @@ function renderTickets(state = 5, action = {}) {
 }
 
 function ticketsView(state = [], action = {}) {
-  const tickets = action.ticketsView;
+  const getDuration = (ticket) => {
+    const duration = ticket.segments[0].duration + ticket.segments[1].duration;
+    return duration;
+  };
   if (action.type === 'SET_TICKETS_VIEW') {
+    const tickets = action.ticketsView.slice(0);
+    let newState = state;
     switch (action.filter) {
       case 'cheaper':
-        return tickets.sort((a, b) => (a.price > b.price ? 1 : -1));
+        newState = tickets.sort((a, b) => (a.price > b.price ? 1 : -1));
+        return newState;
+      case 'faster':
+        newState = tickets.sort((a, b) => (getDuration(a) > getDuration(b) ? 1 : -1));
+        return newState;
+      case 'optimal':
+        newState = tickets.sort((a, b) => (a.price + getDuration(a) > b.price + getDuration(b) ? 1 : -1));
+        return newState;
       default:
         return state;
     }

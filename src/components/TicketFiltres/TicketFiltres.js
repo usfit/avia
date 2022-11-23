@@ -6,19 +6,19 @@ import * as actions from '../../actions';
 
 import classes from './TicketFiltres.module.scss';
 
-const changeFilter = (e, getCurrentFilter) => {
+const changeFilter = (e, onButtonFilter) => {
   const val = e.target.id;
-  getCurrentFilter(val);
+  onButtonFilter(val);
 };
 
-function TicketFiltres({ filter, getCurrentFilter }) {
+function TicketFiltres({ filter, onButtonFilter }) {
   return (
     <div className={classes.TicketFilters}>
       <button
         id="cheaper"
         className={filter === 'cheaper' ? classes.focused : ''}
         type="button"
-        onClick={(e) => changeFilter(e, getCurrentFilter)}
+        onClick={(e) => changeFilter(e, onButtonFilter)}
       >
         САМЫЙ ДЕШЕВЫЙ
       </button>
@@ -26,7 +26,7 @@ function TicketFiltres({ filter, getCurrentFilter }) {
         id="faster"
         className={filter === 'faster' ? classes.focused : ''}
         type="button"
-        onClick={(e) => changeFilter(e, getCurrentFilter)}
+        onClick={(e) => changeFilter(e, onButtonFilter)}
       >
         САМЫЙ БЫСТРЫЙ
       </button>
@@ -34,7 +34,7 @@ function TicketFiltres({ filter, getCurrentFilter }) {
         id="optimal"
         className={filter === 'optimal' ? classes.focused : ''}
         type="button"
-        onClick={(e) => changeFilter(e, getCurrentFilter)}
+        onClick={(e) => changeFilter(e, onButtonFilter)}
       >
         ОПТИМАЛЬНЫЙ
       </button>
@@ -47,9 +47,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const { onButotonFilter } = bindActionCreators(actions, dispatch);
+  const { onButtonFilter } = bindActionCreators(actions, dispatch);
   return {
-    getCurrentFilter: onButotonFilter,
+    onButtonFilter,
   };
 };
 

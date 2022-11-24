@@ -30,3 +30,11 @@
     cursor: url('../../images/cursor.svg'), pointer;
   }
 }
+
+@media (max-width: 610px) {
+  .TicketFilters {
+    max-width: 170px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

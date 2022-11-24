@@ -8,17 +8,26 @@ import * as actions from '../../actions';
 
 import classes from './Content.module.scss';
 
-function Content({ renderTickets }) {
+function Content({ ticketsView, renderTickets }) {
+  const buttonTicketsMore =
+    ticketsView.length !== 0 ? (
+      <button className={classes.Content__readMore} type="button" onClick={renderTickets}>
+        ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
+      </button>
+    ) : null;
   return (
     <div className={classes.Content}>
       <TicketFiltres />
       <TicketsList />
-      <button className={classes.Content__readMore} type="button" onClick={renderTickets}>
-        ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
-      </button>
+      {buttonTicketsMore}
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  const ticketsView = state.ticketsView;
+  return { ticketsView };
+};
 
 const mapDispatchToProps = (dispatch) => {
   const { RENDER_TICKETS } = bindActionCreators(actions, dispatch);
@@ -27,4 +36,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Content);
+export default connect(mapStateToProps, mapDispatchToProps)(Content);

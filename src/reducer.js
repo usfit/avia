@@ -1,6 +1,22 @@
 import { combineReducers } from 'redux';
 
-// Вильтры сверху
+// Обработка ошибок
+
+function onError(state = { isError: false, errorNetwork: false }, action = {}) {
+  let newState = {};
+  switch (action.type) {
+    case 'onError':
+      newState =
+        action.e.message === 'Failed to fetch'
+          ? { isError: true, errorNetwork: true }
+          : { isError: true, errorNetwork: false };
+      return newState;
+    default:
+      return state;
+  }
+}
+
+// Фильтры сверху
 
 function reducerSetFilter(state = { filter: 'cheaper' }, action = {}) {
   switch (action.type) {
@@ -119,25 +135,49 @@ function ticketsView(state = [], action = {}) {
     return duration;
   };
   if (action.type === 'SET_TICKETS_VIEW') {
+    const checkBox = action.checkBox;
     const tickets = action.ticketsView.slice(0);
     let newState = state;
     switch (action.filter) {
       case 'cheaper':
         newState = tickets.sort((a, b) => (a.price > b.price ? 1 : -1));
-        return newState;
+        break;
       case 'faster':
         newState = tickets.sort((a, b) => (getDuration(a) > getDuration(b) ? 1 : -1));
-        return newState;
+        break;
       case 'optimal':
         newState = tickets.sort((a, b) => (a.price + getDuration(a) > b.price + getDuration(b) ? 1 : -1));
-        return newState;
+        break;
       default:
-        return state;
+        break;
     }
+    if (checkBox.all) {
+      return newState;
+    }
+    if (!checkBox.noneTransplants) {
+      newState = newState.filter((ticket) => ticket.segments[0].stops.length !== 0);
+    }
+    if (!checkBox.oneTransplants) {
+      newState = newState.filter((ticket) => ticket.segments[0].stops.length !== 1);
+    }
+    if (!checkBox.twoTransplants) {
+      newState = newState.filter((ticket) => ticket.segments[0].stops.length !== 2);
+    }
+    if (!checkBox.threeTransplants) {
+      newState = newState.filter((ticket) => ticket.segments[0].stops.length !== 3);
+    }
+    return newState;
   }
   return state;
 }
 
-const reducer = combineReducers({ reducerSetFilter, reducerSetCheckbox, getTickets, renderTickets, ticketsView });
+const reducer = combineReducers({
+  reducerSetFilter,
+  reducerSetCheckbox,
+  getTickets,
+  renderTickets,
+  ticketsView,
+  onError,
+});
 
 export default reducer;

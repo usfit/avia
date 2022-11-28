@@ -8,21 +8,51 @@ export const onError = (e) => ({
 
 // Установка отображения билетов
 
-export const SET_TICKETS_VIEW = (ticketsView, filter, checkBox) => ({
+export const SET_TICKETS_VIEW = (ticketsView) => ({
   type: 'SET_TICKETS_VIEW',
   ticketsView,
-  filter,
-  checkBox,
 });
 
 // Какие билеты отображать
 
 export function setTicketsView() {
-  return function (dispatch, setState) {
-    const state = setState();
-    const ticketsList = state.getTickets.ticketsList;
+  return function (dispatch, getState) {
+    const getDuration = (ticket) => {
+      const duration = ticket.segments[0].duration + ticket.segments[1].duration;
+      return duration;
+    };
+    const state = getState();
+    let ticketsList = state.getTickets.ticketsList.slice(0);
     const filter = state.reducerSetFilter.filter;
     const checkBox = state.reducerSetCheckbox.checked;
+    switch (filter) {
+      case 'cheaper':
+        ticketsList.sort((a, b) => (a.price > b.price ? 1 : -1));
+        break;
+      case 'faster':
+        ticketsList.sort((a, b) => (getDuration(a) > getDuration(b) ? 1 : -1));
+        break;
+      case 'optimal':
+        ticketsList.sort((a, b) => (a.price + getDuration(a) > b.price + getDuration(b) ? 1 : -1));
+        break;
+      default:
+        break;
+    }
+    if (checkBox.all) {
+      return dispatch(SET_TICKETS_VIEW(ticketsList, filter, checkBox));
+    }
+    if (!checkBox.noneTransplants) {
+      ticketsList = ticketsList.filter((ticket) => ticket.segments[0].stops.length !== 0);
+    }
+    if (!checkBox.oneTransplants) {
+      ticketsList = ticketsList.filter((ticket) => ticket.segments[0].stops.length !== 1);
+    }
+    if (!checkBox.twoTransplants) {
+      ticketsList = ticketsList.filter((ticket) => ticket.segments[0].stops.length !== 2);
+    }
+    if (!checkBox.threeTransplants) {
+      ticketsList = ticketsList.filter((ticket) => ticket.segments[0].stops.length !== 3);
+    }
     return dispatch(SET_TICKETS_VIEW(ticketsList, filter, checkBox));
   };
 }
@@ -32,13 +62,10 @@ export function setTicketsView() {
 export const GET_CURRENT_FILTER = (filter) => ({ type: filter });
 export const GET_CURRENT_CHECKBOX = (checkBox) => ({ type: checkBox });
 
-export function onButtonFilter(filter = null, checkBox = null) {
+export function onButtonFilter(filter = null) {
   return function (dispatch) {
     if (filter) {
       dispatch(GET_CURRENT_FILTER(filter));
-    }
-    if (checkBox) {
-      dispatch(GET_CURRENT_CHECKBOX(checkBox));
     }
     dispatch(setTicketsView());
   };
@@ -77,7 +104,11 @@ export function fetchTickets(searchId) {
             // eslint-disable-next-line no-use-before-define
             return dispatch(fetchTicketsMore({ tickets: [], stop: false }, searchId));
           }
-          return dispatch(onError(err));
+          const error =
+            err.message === 'Failed to fetch'
+              ? { isError: true, errorNetwork: true }
+              : { isError: true, errorNetwork: false };
+          return dispatch(onError(error));
         })
     );
   };
@@ -104,7 +135,13 @@ export function fetchId() {
         return res.json();
       })
       .then((ans) => dispatch(fetchTickets(ans.searchId)))
-      .catch((err) => dispatch(onError(err)));
+      .catch((err) => {
+        const error =
+          err.message === 'Failed to fetch'
+            ? { isError: true, errorNetwork: true }
+            : { isError: true, errorNetwork: false };
+        return dispatch(onError(error));
+      });
   };
 }
 

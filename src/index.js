@@ -4,9 +4,9 @@ import { compose, legacy_createStore as createStore, applyMiddleware } from 'red
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-import reducer from './reducer';
+import reducer from './redux/reducer';
 import Avia from './components/Avia';
-import { requestTickets } from './actions';
+import { requestTickets } from './redux/actions';
 
 import './style.scss';
 

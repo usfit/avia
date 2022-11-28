@@ -1,15 +1,15 @@
 import { combineReducers } from 'redux';
 
+import * as constants from './constants';
+
+let newState = {};
+
 // Обработка ошибок
 
-function onError(state = { isError: false, errorNetwork: false }, action = {}) {
-  let newState = {};
+function onError(state = constants.error, action = {}) {
   switch (action.type) {
     case 'onError':
-      newState =
-        action.e.message === 'Failed to fetch'
-          ? { isError: true, errorNetwork: true }
-          : { isError: true, errorNetwork: false };
+      newState = { ...action.e };
       return newState;
     default:
       return state;
@@ -18,7 +18,7 @@ function onError(state = { isError: false, errorNetwork: false }, action = {}) {
 
 // Фильтры сверху
 
-function reducerSetFilter(state = { filter: 'cheaper' }, action = {}) {
+function reducerSetFilter(state = constants.filter, action = {}) {
   switch (action.type) {
     case 'cheaper':
       return { filter: 'cheaper' };
@@ -35,7 +35,7 @@ function reducerSetFilter(state = { filter: 'cheaper' }, action = {}) {
 
 // Фильтры снизу
 
-const checkAll = (newState) => {
+const checkAll = () => {
   let count = 0;
   Object.values(newState)
     .splice(1)
@@ -46,25 +46,12 @@ const checkAll = (newState) => {
 };
 
 const setCheckbox = (state, check) => {
-  const newState = { ...state.checked, ...{ [check]: !state.checked[check] } };
+  newState = { ...state.checked, ...{ [check]: !state.checked[check] } };
   newState.all = !!(checkAll(newState) === 4);
   return newState;
 };
 
-function reducerSetCheckbox(
-  state = {
-    checked: {
-      all: true,
-      noneTransplants: true,
-      oneTransplants: true,
-      twoTransplants: true,
-      threeTransplants: true,
-    },
-  },
-  action = {}
-) {
-  let newState = {};
-
+function reducerSetCheckbox(state = constants.checked, action = {}) {
   switch (action.type) {
     case 'all':
       newState = { ...state.checked, ...{ all: !state.checked.all } };
@@ -99,13 +86,7 @@ function reducerSetCheckbox(
 
 // Начинаем поиск
 
-function getTickets(
-  state = {
-    isFetching: false,
-    ticketsList: [],
-  },
-  action = {}
-) {
+function getTickets(state = constants.tickets, action = {}) {
   let newTicketsList = [];
   switch (action.type) {
     case 'RECEIVE_SEARCH_ID':
@@ -130,42 +111,8 @@ function renderTickets(state = 5, action = {}) {
 }
 
 function ticketsView(state = [], action = {}) {
-  const getDuration = (ticket) => {
-    const duration = ticket.segments[0].duration + ticket.segments[1].duration;
-    return duration;
-  };
-  if (action.type === 'SET_TICKETS_VIEW') {
-    const checkBox = action.checkBox;
-    const tickets = action.ticketsView.slice(0);
-    let newState = state;
-    switch (action.filter) {
-      case 'cheaper':
-        newState = tickets.sort((a, b) => (a.price > b.price ? 1 : -1));
-        break;
-      case 'faster':
-        newState = tickets.sort((a, b) => (getDuration(a) > getDuration(b) ? 1 : -1));
-        break;
-      case 'optimal':
-        newState = tickets.sort((a, b) => (a.price + getDuration(a) > b.price + getDuration(b) ? 1 : -1));
-        break;
-      default:
-        break;
-    }
-    if (checkBox.all) {
-      return newState;
-    }
-    if (!checkBox.noneTransplants) {
-      newState = newState.filter((ticket) => ticket.segments[0].stops.length !== 0);
-    }
-    if (!checkBox.oneTransplants) {
-      newState = newState.filter((ticket) => ticket.segments[0].stops.length !== 1);
-    }
-    if (!checkBox.twoTransplants) {
-      newState = newState.filter((ticket) => ticket.segments[0].stops.length !== 2);
-    }
-    if (!checkBox.threeTransplants) {
-      newState = newState.filter((ticket) => ticket.segments[0].stops.length !== 3);
-    }
+  if (action.ticketsView) {
+    newState = action.ticketsView;
     return newState;
   }
   return state;

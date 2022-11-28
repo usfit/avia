@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import TicketsList from '../TicketsList';
 import TicketFiltres from '../TicketFiltres/TicketFiltres';
-import * as actions from '../../actions';
+import * as actions from '../../redux/actions';
 
 import classes from './Content.module.scss';
 

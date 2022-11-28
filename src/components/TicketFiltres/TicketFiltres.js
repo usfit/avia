@@ -43,7 +43,7 @@ function TicketFiltres({ filter, onButtonFilter }) {
 }
 
 const mapStateToProps = (state) => {
-  return state.reducerSetFilter;
+  return state.setFilters;
 };
 
 const mapDispatchToProps = (dispatch) => {

@@ -1,6 +1,6 @@
 export const error = { isError: false, errorNetwork: false };
-export const filter = { filter: 'cheaper' };
-export const checked = {
+export const filters = {
+  filter: 'cheaper',
   checked: {
     all: true,
     noneTransplants: true,

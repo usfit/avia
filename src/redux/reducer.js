@@ -16,71 +16,88 @@ function onError(state = constants.error, action = {}) {
   }
 }
 
-// Фильтры сверху
+// Фильтры
 
-function reducerSetFilter(state = constants.filter, action = {}) {
+function setFilters(state = constants.filters, action = {}) {
   switch (action.type) {
     case 'cheaper':
-      return { filter: 'cheaper' };
+      return { ...state, filter: 'cheaper' };
 
     case 'faster':
-      return { filter: 'faster' };
+      return { ...state, filter: 'faster' };
 
     case 'optimal':
-      return { filter: 'optimal' };
+      return { ...state, filter: 'optimal' };
     default:
       return state;
   }
 }
 
-// Фильтры снизу
+// // Фильтры сверху
 
-const checkAll = () => {
-  let count = 0;
-  Object.values(newState)
-    .splice(1)
-    .forEach((value) => {
-      count += value;
-    });
-  return count;
-};
+// function reducerSetFilter(state = constants.filter, action = {}) {
+//   switch (action.type) {
+//     case 'cheaper':
+//       return { filter: 'cheaper' };
 
-const setCheckbox = (state, check) => {
-  newState = { ...state.checked, ...{ [check]: !state.checked[check] } };
-  newState.all = !!(checkAll(newState) === 4);
-  return newState;
-};
+//     case 'faster':
+//       return { filter: 'faster' };
 
-function reducerSetCheckbox(state = constants.checked, action = {}) {
-  switch (action.type) {
-    case 'all':
-      newState = { ...state.checked, ...{ all: !state.checked.all } };
-      Object.keys(newState)
-        .splice(1)
-        .forEach((key) => {
-          newState[key] = !!newState.all;
-        });
-      return { checked: newState };
-    case 'noneTransplants':
-      newState = setCheckbox(state, 'noneTransplants');
-      return { checked: newState };
+//     case 'optimal':
+//       return { filter: 'optimal' };
+//     default:
+//       return state;
+//   }
+// }
 
-    case 'oneTransplants':
-      newState = setCheckbox(state, 'oneTransplants');
-      return { checked: newState };
+// // Фильтры снизу
 
-    case 'twoTransplants':
-      newState = setCheckbox(state, 'twoTransplants');
-      return { checked: newState };
+// const checkAll = () => {
+//   let count = 0;
+//   Object.values(newState)
+//     .splice(1)
+//     .forEach((value) => {
+//       count += value;
+//     });
+//   return count;
+// };
 
-    case 'threeTransplants':
-      newState = setCheckbox(state, 'threeTransplants');
-      return { state, checked: newState };
+// const setCheckbox = (state, check) => {
+//   newState = { ...state.checked, ...{ [check]: !state.checked[check] } };
+//   newState.all = !!(checkAll(newState) === 4);
+//   return newState;
+// };
 
-    default:
-      return state;
-  }
-}
+// function reducerSetCheckbox(state = constants.checked, action = {}) {
+//   switch (action.type) {
+//     case 'all':
+//       newState = { ...state.checked, ...{ all: !state.checked.all } };
+//       Object.keys(newState)
+//         .splice(1)
+//         .forEach((key) => {
+//           newState[key] = !!newState.all;
+//         });
+//       return { checked: newState };
+//     case 'noneTransplants':
+//       newState = setCheckbox(state, 'noneTransplants');
+//       return { checked: newState };
+
+//     case 'oneTransplants':
+//       newState = setCheckbox(state, 'oneTransplants');
+//       return { checked: newState };
+
+//     case 'twoTransplants':
+//       newState = setCheckbox(state, 'twoTransplants');
+//       return { checked: newState };
+
+//     case 'threeTransplants':
+//       newState = setCheckbox(state, 'threeTransplants');
+//       return { state, checked: newState };
+
+//     default:
+//       return state;
+//   }
+// }
 
 // Получение списка билетов
 
@@ -119,8 +136,7 @@ function ticketsView(state = [], action = {}) {
 }
 
 const reducer = combineReducers({
-  reducerSetFilter,
-  reducerSetCheckbox,
+  setFilters,
   getTickets,
   renderTickets,
   ticketsView,

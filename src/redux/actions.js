@@ -23,8 +23,8 @@ export function setTicketsView() {
     };
     const state = getState();
     let ticketsList = state.getTickets.ticketsList.slice(0);
-    const filter = state.reducerSetFilter.filter;
-    const checkBox = state.reducerSetCheckbox.checked;
+    const filter = state.setFilters.filter;
+    const checkBox = state.setFilters.checked;
     switch (filter) {
       case 'cheaper':
         ticketsList.sort((a, b) => (a.price > b.price ? 1 : -1));
@@ -60,9 +60,8 @@ export function setTicketsView() {
 // Переключения фильтров
 
 export const GET_CURRENT_FILTER = (filter) => ({ type: filter });
-export const GET_CURRENT_CHECKBOX = (checkBox) => ({ type: checkBox });
 
-export function onButtonFilter(filter = null) {
+export function onButtonFilter(filter) {
   return function (dispatch) {
     if (filter) {
       dispatch(GET_CURRENT_FILTER(filter));

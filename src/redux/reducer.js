@@ -20,84 +20,12 @@ function onError(state = constants.error, action = {}) {
 
 function setFilters(state = constants.filters, action = {}) {
   switch (action.type) {
-    case 'cheaper':
-      return { ...state, filter: 'cheaper' };
-
-    case 'faster':
-      return { ...state, filter: 'faster' };
-
-    case 'optimal':
-      return { ...state, filter: 'optimal' };
+    case 'GET_CURRENT_FILTER':
+      return { ...state, ...action.newState };
     default:
       return state;
   }
 }
-
-// // Фильтры сверху
-
-// function reducerSetFilter(state = constants.filter, action = {}) {
-//   switch (action.type) {
-//     case 'cheaper':
-//       return { filter: 'cheaper' };
-
-//     case 'faster':
-//       return { filter: 'faster' };
-
-//     case 'optimal':
-//       return { filter: 'optimal' };
-//     default:
-//       return state;
-//   }
-// }
-
-// // Фильтры снизу
-
-// const checkAll = () => {
-//   let count = 0;
-//   Object.values(newState)
-//     .splice(1)
-//     .forEach((value) => {
-//       count += value;
-//     });
-//   return count;
-// };
-
-// const setCheckbox = (state, check) => {
-//   newState = { ...state.checked, ...{ [check]: !state.checked[check] } };
-//   newState.all = !!(checkAll(newState) === 4);
-//   return newState;
-// };
-
-// function reducerSetCheckbox(state = constants.checked, action = {}) {
-//   switch (action.type) {
-//     case 'all':
-//       newState = { ...state.checked, ...{ all: !state.checked.all } };
-//       Object.keys(newState)
-//         .splice(1)
-//         .forEach((key) => {
-//           newState[key] = !!newState.all;
-//         });
-//       return { checked: newState };
-//     case 'noneTransplants':
-//       newState = setCheckbox(state, 'noneTransplants');
-//       return { checked: newState };
-
-//     case 'oneTransplants':
-//       newState = setCheckbox(state, 'oneTransplants');
-//       return { checked: newState };
-
-//     case 'twoTransplants':
-//       newState = setCheckbox(state, 'twoTransplants');
-//       return { checked: newState };
-
-//     case 'threeTransplants':
-//       newState = setCheckbox(state, 'threeTransplants');
-//       return { state, checked: newState };
-
-//     default:
-//       return state;
-//   }
-// }
 
 // Получение списка билетов
 

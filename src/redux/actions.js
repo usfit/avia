@@ -59,12 +59,64 @@ export function setTicketsView() {
 
 // Переключения фильтров
 
-export const GET_CURRENT_FILTER = (filter) => ({ type: filter });
+export const GET_CURRENT_FILTER = (newState) => ({ type: 'GET_CURRENT_FILTER', newState });
+
+const checkAll = (newState) => {
+  let count = 0;
+  Object.values(newState)
+    .splice(1)
+    .forEach((value) => {
+      count += value;
+    });
+  return count;
+};
+
+const setCheckbox = (state, check) => {
+  const newState = { ...state.checked, ...{ [check]: !state.checked[check] } };
+  newState.all = !!(checkAll(newState) === 4);
+  return newState;
+};
 
 export function onButtonFilter(filter) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     if (filter) {
-      dispatch(GET_CURRENT_FILTER(filter));
+      const state = getState().setFilters;
+      let { stateFilter, stateChecked } = state;
+      switch (filter) {
+        case 'cheaper':
+          stateFilter = { filter: 'cheaper' };
+          break;
+        case 'faster':
+          stateFilter = { filter: 'faster' };
+          break;
+        case 'optimal':
+          stateFilter = { filter: 'optimal' };
+          break;
+        case 'all':
+          stateChecked = { ...state.checked, ...{ all: !state.checked.all } };
+          Object.keys(stateChecked)
+            .splice(1)
+            .forEach((key) => {
+              stateChecked[key] = !!stateChecked.all;
+            });
+          break;
+        case 'noneTransplants':
+          stateChecked = setCheckbox(state, 'noneTransplants');
+          break;
+        case 'oneTransplants':
+          stateChecked = setCheckbox(state, 'oneTransplants');
+          break;
+        case 'twoTransplants':
+          stateChecked = setCheckbox(state, 'twoTransplants');
+          break;
+        case 'threeTransplants':
+          stateChecked = setCheckbox(state, 'threeTransplants');
+          break;
+        default:
+          break;
+      }
+      const newState = stateFilter || { checked: stateChecked };
+      dispatch(GET_CURRENT_FILTER(newState));
     }
     dispatch(setTicketsView());
   };

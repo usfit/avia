@@ -14,3 +14,8 @@ export const tickets = {
   isFetching: false,
   ticketsList: [],
 };
+
+export const filtersButtons = {
+  filtersLabels: ['cheaper', 'faster', 'optimal'],
+  filtersDesc: ['САМЫЙ ДЕШЕВЫЙ', 'САМЫЙ БЫСТРЫЙ', 'ОПТИМАЛЬНЫЙ'],
+};

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { filtersButtons } from '../../redux/constants';
 import * as actions from '../../redux/actions';
 
 import classes from './TicketFiltres.module.scss';
@@ -12,34 +13,21 @@ const changeFilter = (e, onButtonFilter) => {
 };
 
 function TicketFiltres({ filter, onButtonFilter }) {
-  return (
-    <div className={classes.TicketFilters}>
+  const { filtersLabels, filtersDesc } = filtersButtons;
+  const buttons = filtersLabels.map((item, index) => {
+    return (
       <button
-        id="cheaper"
-        className={filter === 'cheaper' ? classes.focused : ''}
+        key={`buttonFiltersKey__${item}`}
+        id={item}
+        className={filter === item ? classes.focused : ''}
         type="button"
         onClick={(e) => changeFilter(e, onButtonFilter)}
       >
-        САМЫЙ ДЕШЕВЫЙ
+        {filtersDesc[index]}
       </button>
-      <button
-        id="faster"
-        className={filter === 'faster' ? classes.focused : ''}
-        type="button"
-        onClick={(e) => changeFilter(e, onButtonFilter)}
-      >
-        САМЫЙ БЫСТРЫЙ
-      </button>
-      <button
-        id="optimal"
-        className={filter === 'optimal' ? classes.focused : ''}
-        type="button"
-        onClick={(e) => changeFilter(e, onButtonFilter)}
-      >
-        ОПТИМАЛЬНЫЙ
-      </button>
-    </div>
-  );
+    );
+  });
+  return <div className={classes.TicketFilters}>{buttons}</div>;
 }
 
 const mapStateToProps = (state) => {

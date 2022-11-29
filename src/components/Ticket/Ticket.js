@@ -1,50 +1,37 @@
 import React from 'react';
-import { format } from 'date-fns';
+import { v4 as uuidv4 } from 'uuid';
+
+import {
+  messageStopCount,
+  messageStops,
+  getTicketDate,
+  calcPrice,
+  calcDuration,
+  getDirection,
+} from '../../utils/utils';
 
 import classes from './Ticket.module.scss';
 
-const messageStopCount = (stopsCount) => {
-  switch (stopsCount) {
-    case 0:
-      return 'БЕЗ ПЕРЕСАДОК';
-    case 1:
-      return `${stopsCount} ПЕРЕСАДКА`;
-    default:
-      return `${stopsCount} ПЕРЕСАДКИ`;
-  }
-};
-
-const messageStops = (stops) => {
-  const length = stops.length;
-  let message = '';
-  stops.forEach((stop, ind) => {
-    message = ind + 1 === length ? (message += stop) : (message += `${stop}, `);
-  });
-  return message;
-};
-
-const getTicketDate = (date, duration) => {
-  const oneDate = new Date(date);
-  const twoDate = new Date(oneDate.getTime() + duration * 60000);
-  const dateMessage = `${format(oneDate, 'HH:mm')} - ${format(twoDate, 'HH:mm')}`;
-  return dateMessage;
-};
-
 function Ticket({ ticket }) {
   const { price, carrier } = ticket;
-  const priceTicket =
-    price % 1000 === 0 ? `${Math.trunc(price / 1000)} 000 Р` : `${Math.trunc(price / 1000)} ${price % 1000} Р`;
-  const segmentOne = ticket.segments[0];
-  const segmentsOneMessageStopsCount = messageStopCount(segmentOne.stops.length);
-  const segmentOneMessageStops = messageStops(segmentOne.stops);
-  const segmentOneDuration = `${Math.trunc(segmentOne.duration / 60)}ч ${segmentOne.duration % 60}м`;
-  const segmentOneDate = getTicketDate(segmentOne.date, segmentOne.duration);
+  const priceTicket = calcPrice(price);
 
-  const segmentTwo = ticket.segments[1];
-  const segmentsTwoMessageStopsCount = messageStopCount(segmentTwo.stops.length);
-  const segmentTwoMessageStops = messageStops(segmentTwo.stops);
-  const segmentTwoDuration = `${Math.trunc(segmentTwo.duration / 60)}ч ${segmentTwo.duration % 60}м`;
-  const segmentTwoDate = getTicketDate(segmentTwo.date, segmentTwo.duration);
+  const segments = ticket.segments.map((segment) => {
+    return (
+      <div key={uuidv4()}>
+        <ul className={classes.Ticket__bodyHeaders}>
+          <li>{getDirection(segment)}</li>
+          <li>В ПУТИ</li>
+          <li>{messageStopCount(segment.stops.length)}</li>
+        </ul>
+        <ul className={classes.Ticket__bodyInfo}>
+          <li>{getTicketDate(segment.date, segment.duration)}</li>
+          <li>{calcDuration(segment.duration)}</li>
+          <li>{messageStops(segment.stops)}</li>
+        </ul>
+      </div>
+    );
+  });
 
   return (
     <div className={classes.Ticket}>
@@ -52,40 +39,7 @@ function Ticket({ ticket }) {
         <p className={classes.Ticket__price}>{priceTicket}</p>
         <img alt="logo" src={`https://pics.avs.io/99/36/${carrier}.png`} />
       </div>
-      <div className={classes.Ticket__info}>
-        <table>
-          <thead>
-            <tr>
-              <th>{`${segmentOne.origin} - ${segmentOne.destination}`}</th>
-              <th>В ПУТИ</th>
-              <th>{segmentsOneMessageStopsCount}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{segmentOneDate}</td>
-              <td>{segmentOneDuration}</td>
-              <td>{segmentOneMessageStops}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table>
-          <thead>
-            <tr>
-              <th>{`${segmentTwo.origin} - ${segmentTwo.destination}`}</th>
-              <th>В ПУТИ</th>
-              <th>{segmentsTwoMessageStopsCount}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{segmentTwoDate}</td>
-              <td>{segmentTwoDuration}</td>
-              <td>{segmentTwoMessageStops}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div className={classes.Ticket__body}>{segments}</div>
     </div>
   );
 }

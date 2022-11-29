@@ -4,13 +4,12 @@
   gap: 20px;
   background-color: white;
   padding: 20px;
-  width: 100%;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   box-sizing: border-box;
 }
 
-.Ticket__info {
+.Ticket__body {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -30,18 +29,25 @@
   margin: 0;
 }
 
-th {
+ul {
+  display: flex;
+  justify-content: space-between;
+  li {
+    width: 100%;
+    max-width: 141px;
+  }
+}
+
+.Ticket__bodyHeaders {
   font-size: 12px;
   line-height: 18px;
   font-weight: 600;
   color: #a0b0b9;
-  text-align: left;
 }
 
-td {
+.Ticket__bodyInfo {
   font-size: 14px;
   line-height: 21px;
   font-weight: 600;
   color: #4a4a4a;
-  width: 141px;
 }

@@ -12,67 +12,28 @@ const changeCheckBox = (e, getCurrentCheckbox) => {
   getCurrentCheckbox(val);
 };
 
-function AsideFilter({ checked, getCurrentCheckbox }) {
+function AsideFilter({ checked, checkboxTitles, getCurrentCheckbox }) {
+  const checkKeys = Object.keys(checked);
+  const checkBoxes = checkKeys.map((key, index) => {
+    return (
+      <div className={classes.AsideFilter__item} key={`checkBox_${key}`}>
+        <input
+          type="checkbox"
+          className={classes.AsideFilter__checkbox}
+          id={key}
+          name={key}
+          checked={checked[key]}
+          onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
+        />
+        <label htmlFor={key}>{checkboxTitles[index]}</label>
+      </div>
+    );
+  });
   return (
     <aside className={classes.AsideFilter}>
       <fieldset>
         <legend>Количество пересадок</legend>
-
-        <div className={classes.AsideFilter__item}>
-          <input
-            type="checkbox"
-            className={classes.AsideFilter__checkbox}
-            id="all"
-            name="all"
-            checked={checked.all}
-            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
-          />
-          <label htmlFor="all">Все</label>
-        </div>
-        <div className={classes.AsideFilter__item}>
-          <input
-            type="checkbox"
-            className={classes.AsideFilter__checkbox}
-            id="noneTransplants"
-            name="noneTransplants"
-            checked={checked.noneTransplants}
-            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
-          />
-          <label htmlFor="noneTransplants">Без пересадок</label>
-        </div>
-        <div className={classes.AsideFilter__item}>
-          <input
-            type="checkbox"
-            className={classes.AsideFilter__checkbox}
-            id="oneTransplants"
-            name="oneTransplants"
-            checked={checked.oneTransplants}
-            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
-          />
-          <label htmlFor="oneTransplants">1 пересадка</label>
-        </div>
-        <div className={classes.AsideFilter__item}>
-          <input
-            type="checkbox"
-            className={classes.AsideFilter__checkbox}
-            id="twoTransplants"
-            name="twoTransplants"
-            checked={checked.twoTransplants}
-            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
-          />
-          <label htmlFor="twoTransplants">2 пересадки</label>
-        </div>
-        <div className={classes.AsideFilter__item}>
-          <input
-            type="checkbox"
-            className={classes.AsideFilter__checkbox}
-            id="threeTransplants"
-            name="threeTransplants"
-            checked={checked.threeTransplants}
-            onChange={(e) => changeCheckBox(e, getCurrentCheckbox)}
-          />
-          <label htmlFor="threeTransplants">3 пересадки</label>
-        </div>
+        {checkBoxes}
       </fieldset>
     </aside>
   );

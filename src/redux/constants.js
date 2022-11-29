@@ -8,6 +8,7 @@ export const filters = {
     twoTransplants: true,
     threeTransplants: true,
   },
+  checkboxTitles: ['Все', 'Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'],
 };
 export const tickets = {
   isFetching: false,
